@@ -33,14 +33,11 @@ app.get('/:code', async (req, res) => {
   }
 });
 
-// For Vercel — export app directly (serverless)
-// For local dev — start the server normally
+// Vercel: export app as serverless function
+// Local: start the server normally
 if (process.env.VERCEL) {
-  // Vercel handles the server, just connect to DB and export
-  connect().catch((err) => console.error('MongoDB connection error:', err.message));
   module.exports = app;
 } else {
-  // Local development — start server after DB connects
   connect()
     .then(() => {
       const server = app.listen(PORT, () => {
