@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SnapLink — Free URL Shortener</title>
+  <meta name="description" content="SnapLink turns long, messy URLs into short, shareable links in one click. Track clicks, generate QR codes, and manage all your links for free." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- QR Code library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <!-- ===== Animated BG Orbs ===== -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ===== Navbar ===== -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">SnapLink</span>
+      </div>
+      <div class="nav-links">
+        <a href="#shorten-section" id="nav-shorten">Shorten</a>
+        <a href="#history-section" id="nav-history">History</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Hero Section ===== -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="badge">✨ Fast &amp; Free URL Shortener</div>
+      <h1 class="hero-title">
+        Turn Long URLs Into<br />
+        <span class="gradient-text">Powerful Short Links</span>
+      </h1>
+      <p class="hero-subtitle">
+        Shorten, share, and track your links effortlessly. Get click analytics and QR codes in seconds.
+      </p>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-number" id="stat-total">—</span>
+          <span class="stat-label">Links Created</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number" id="stat-clicks">—</span>
+          <span class="stat-label">Total Clicks</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">7</span>
+          <span class="stat-label">Char Short Code</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Main Content ===== -->
+  <main class="main-content">
+
+    <!-- Shorten Card -->
+    <section id="shorten-section" class="card shorten-card">
+      <h2 class="card-title">Shorten a URL</h2>
+
+      <form id="shorten-form" novalidate>
+        <div class="input-group">
+          <div class="input-icon">🔗</div>
+          <input
+            type="text"
+            id="url-input"
+            class="url-input"
+            placeholder="Paste your long URL here…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button type="submit" id="shorten-btn" class="shorten-btn">
+            <span class="btn-text">Shorten</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </div>
+
+        <!-- Optional custom alias -->
+        <div class="alias-row">
+          <label for="custom-alias" class="alias-label">Custom alias (optional)</label>
+          <div class="alias-input-wrap">
+            <span class="alias-prefix">snaplink.io/</span>
+            <input
+              type="text"
+              id="custom-alias"
+              class="alias-input"
+              placeholder="my-link"
+              maxlength="30"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+
+        <div id="form-error" class="form-error" role="alert" aria-live="polite"></div>
+      </form>
+
+      <!-- Result Card (hidden initially) -->
+      <div id="result-container" class="result-container hidden">
+        <div class="result-header">
+          <span class="result-badge">✅ Link Created!</span>
+        </div>
+        <div class="result-body">
+          <div class="result-left">
+            <div class="result-original">
+              <span class="result-label">Original URL</span>
+              <span id="result-original-url" class="result-original-url"></span>
+            </div>
+            <div class="result-short">
+              <span class="result-label">Short Link</span>
+              <div class="short-link-row">
+                <a id="result-short-url" class="result-short-url" href="#" target="_blank" rel="noopener noreferrer"></a>
+                <button id="copy-btn" class="copy-btn" title="Copy to clipboard" aria-label="Copy short link">
+                  <span class="copy-icon">📋</span>
+                  <span class="copy-text">Copy</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="result-right">
+            <div id="qrcode-container" class="qrcode-container">
+              <div id="qrcode"></div>
+              <span class="qr-label">Scan QR Code</span>
+            </div>
+          </div>
+        </div>
+        <button id="shorten-another-btn" class="shorten-another-btn">+ Shorten Another URL</button>
+      </div>
+    </section>
+
+    <!-- How it Works Section -->
+    <section class="how-it-works">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon">📋</div>
+          <h3>Paste Your URL</h3>
+          <p>Paste any long URL from your browser, docs, or social media into the input above.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon">⚡</div>
+          <h3>Click Shorten</h3>
+          <p>SnapLink instantly generates a compact 7-character short link for you.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon">📈</div>
+          <h3>Share &amp; Track</h3>
+          <p>Share your link anywhere. Every click is tracked and shown in real time.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history-section" class="card history-card">
+      <div class="history-header">
+        <h2 class="card-title">Recent Links</h2>
+        <button id="refresh-btn" class="refresh-btn" title="Refresh" aria-label="Refresh recent links">↻ Refresh</button>
+      </div>
+
+      <div id="history-loading" class="loading-state">
+        <div class="spinner"></div>
+        <span>Loading links…</span>
+      </div>
+
+      <div id="history-empty" class="empty-state hidden">
+        <div class="empty-icon">🔗</div>
+        <p>No links yet. Shorten your first URL above!</p>
+      </div>
+
+      <div id="history-table-wrap" class="table-wrap hidden">
+        <table class="history-table" id="history-table">
+          <thead>
+            <tr>
+              <th>Original URL</th>
+              <th>Short Link</th>
+              <th>Clicks</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="history-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span>⚡</span>
+        <span>SnapLink</span>
+      </div>
+      <p class="footer-text">Built with Node.js, Express &amp; MongoDB. Free forever.</p>
+    </div>
+  </footer>
+
+  <!-- ===== Toast Notification ===== -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
